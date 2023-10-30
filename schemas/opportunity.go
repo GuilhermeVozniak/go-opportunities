@@ -1,14 +1,15 @@
 package schemas
 
-import "gorm.io/gorm"
-
+import (
+	"gorm.io/gorm"
+)
 
 type Opportunity struct {
 	gorm.Model
-	Role string 
-	Company string
+	Role     string
+	Company  string
 	Location string
-	Remote bool
-	Link string
-	Salary int64
+	Remote   bool
+	Link     string
+	Salary   int64
 }

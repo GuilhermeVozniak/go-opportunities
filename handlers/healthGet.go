@@ -5,8 +5,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func CreateOpportunityHandler(ctx *gin.Context){
+
+func GetHealthHandler(ctx *gin.Context){
 	ctx.JSON(http.StatusOK, gin.H{
-		"message": "Hello World",
+		"online": true,
 	})
 }

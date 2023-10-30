@@ -2,13 +2,11 @@ package handlers
 
 import (
 	"net/http"
-
 	"github.com/gin-gonic/gin"
 )
 
-
-func GetHealthHandler(ctx *gin.Context){
+func UpdateOpportunityByIdHandler(ctx *gin.Context){
 	ctx.JSON(http.StatusOK, gin.H{
-		"online": true,
+		"message": "Hello World",
 	})
 }
