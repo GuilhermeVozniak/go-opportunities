@@ -1,19 +1,18 @@
 package handlers
 
 import (
-	"net/http"
-
 	opportunityRequestDTO "github.com/GuilhermeVozniak/go-opportunities/dto/opportunity/requests"
 	opportunityResponseDTO "github.com/GuilhermeVozniak/go-opportunities/dto/opportunity/responses"
 	"github.com/GuilhermeVozniak/go-opportunities/utils"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 func CreateOpportunityHandler(ctx *gin.Context) {
 	var (
-		request opportunityRequestDTO.CreateOpportunityRequest
-		response opportunityResponseDTO.OpportunityResponse
-		err     error
+		request  opportunityRequestDTO.CreateOpportunityRequest
+		response *opportunityResponseDTO.CreateOpportunityResponse
+		err      error
 	)
 
 	// parse request
@@ -39,7 +38,7 @@ func CreateOpportunityHandler(ctx *gin.Context) {
 	}
 
 	// convert model to dto
-	response.FromModel(opportunity)
+	response = response.FromModel(opportunity)
 
 	utils.SendSuccessResponseWithCode(ctx, http.StatusCreated, "create-opportunity", opportunity)
 }

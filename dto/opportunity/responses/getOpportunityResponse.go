@@ -1,11 +1,11 @@
 package dto
 
 import (
-	"time"
 	"github.com/GuilhermeVozniak/go-opportunities/schemas"
+	"time"
 )
 
-type CreateOpportunityResponse struct {
+type GetOpportunityResponse struct {
 	ID        uint      `json:"id"`
 	CreatedAt time.Time `json:"createdAt"`
 	UpdatedAt time.Time `json:"updatedAt"`
@@ -18,8 +18,8 @@ type CreateOpportunityResponse struct {
 	Salary    int64     `json:"salary"`
 }
 
-func (*CreateOpportunityResponse) FromModel(opportunity *schemas.Opportunity) *CreateOpportunityResponse {
-	return &CreateOpportunityResponse{
+func (*GetOpportunityResponse) FromModel(opportunity *schemas.Opportunity) *GetOpportunityResponse {
+	return &GetOpportunityResponse{
 		ID:        opportunity.ID,
 		CreatedAt: opportunity.CreatedAt,
 		UpdatedAt: opportunity.UpdatedAt,
