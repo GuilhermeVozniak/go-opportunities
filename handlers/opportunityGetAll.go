@@ -15,16 +15,15 @@ import (
 // @Tags Opportunities
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} dto.DeleteOpportunityResponse
+// @Success 200 {object} dto.GetallOpportunityResponse
 // @Failure 400 {object} utils.ErrorResponse
 // @Failure 404 {object} utils.ErrorResponse
 // @Failure 500 {object} utils.ErrorResponse
-// @Router /opportunity [delete]
+// @Router /opportunities [get]
 func GetAllOpportunitiesHandler(ctx *gin.Context) {
 	var (
 		opportunities = []schemas.Opportunity{}
 		response      *opportunityResponseDTO.GetallOpportunityResponse
-		dto           opportunityResponseDTO.GetallOpportunityResponse
 		err           error
 	)
 
@@ -34,6 +33,6 @@ func GetAllOpportunitiesHandler(ctx *gin.Context) {
 		return
 	}
 
-	response = dto.FromModelToResponse(&opportunities, "list-opportunities")
+	response = response.FromModelToResponse(&opportunities, "list-opportunities")
 	utils.SendSuccessResponseWithCode(ctx, http.StatusOK, &response)
 }

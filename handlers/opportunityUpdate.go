@@ -21,7 +21,8 @@ import (
 // @Accept  json
 // @Produce  json
 // @Param id path string true "Opportunity ID"
-// @Success 200 {object} dto.UpdateOpportunityRequest
+// @Param request body dto.UpdateOpportunityRequest true "Request body"
+// @Success 200 {object} dto.UpdateOpportunityResponse
 // @Failure 400 {object} utils.ErrorResponse
 // @Failure 404 {object} utils.ErrorResponse
 // @Failure 500 {object} utils.ErrorResponse

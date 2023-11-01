@@ -16,6 +16,64 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/health": {
+            "get": {
+                "description": "Return api heath status",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get application health",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.HealthResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/opportunities": {
+            "get": {
+                "description": "List all job opportunity",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Opportunities"
+                ],
+                "summary": "List all opportunity",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetallOpportunityResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/opportunity": {
             "get": {
                 "description": "Get a job opportunity details",
@@ -84,13 +142,22 @@ const docTemplate = `{
                         "name": "id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "Request body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpdateOpportunityRequest"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.UpdateOpportunityRequest"
+                            "$ref": "#/definitions/dto.UpdateOpportunityResponse"
                         }
                     },
                     "400": {
@@ -164,7 +231,7 @@ const docTemplate = `{
                 }
             },
             "delete": {
-                "description": "List all job opportunity",
+                "description": "Delete a job opportunity",
                 "consumes": [
                     "application/json"
                 ],
@@ -174,7 +241,16 @@ const docTemplate = `{
                 "tags": [
                     "Opportunities"
                 ],
-                "summary": "List all opportunity",
+                "summary": "Delete opportunity",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Opportunity ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -366,6 +442,81 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.GetallOpportunityData": {
+            "type": "object",
+            "properties": {
+                "company": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "remote": {
+                    "type": "boolean"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "salary": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.GetallOpportunityResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.GetallOpportunityData"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.UpdateOpportunityData": {
+            "type": "object",
+            "properties": {
+                "company": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "remote": {
+                    "type": "boolean"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "salary": {
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.UpdateOpportunityRequest": {
             "type": "object",
             "properties": {
@@ -386,6 +537,28 @@ const docTemplate = `{
                 },
                 "salary": {
                     "type": "integer"
+                }
+            }
+        },
+        "dto.UpdateOpportunityResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/dto.UpdateOpportunityData"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "handlers.HealthResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "online": {
+                    "type": "boolean"
                 }
             }
         },

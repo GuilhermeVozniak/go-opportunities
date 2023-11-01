@@ -1,13 +1,26 @@
 package handlers
 
 import (
-	"net/http"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
+// @BasePath /api/v1
 
-func GetHealthHandler(ctx *gin.Context){
-	ctx.JSON(http.StatusOK, gin.H{
-		"online": true,
+// @Summary Get application health
+// @Description Return api heath status
+// @Produce  json
+// @Success 200 {object} HealthResponse
+// @Router /health [get]
+func GetHealthHandler(ctx *gin.Context) {
+	ctx.Header("content-type", "application/json")
+	ctx.JSON(http.StatusOK, HealthResponse{
+		Message: "API is online",
+		Online:  true,
 	})
+}
+
+type HealthResponse struct {
+	Message string `json:"message"`
+	Online  bool   `json:"online"`
 }

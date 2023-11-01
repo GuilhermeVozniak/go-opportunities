@@ -104,6 +104,55 @@ definitions:
       message:
         type: string
     type: object
+  dto.GetallOpportunityData:
+    properties:
+      company:
+        type: string
+      id:
+        type: integer
+      link:
+        type: string
+      location:
+        type: string
+      remote:
+        type: boolean
+      role:
+        type: string
+      salary:
+        type: integer
+    type: object
+  dto.GetallOpportunityResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.GetallOpportunityData'
+        type: array
+      message:
+        type: string
+    type: object
+  dto.UpdateOpportunityData:
+    properties:
+      company:
+        type: string
+      createdAt:
+        type: string
+      deletedAt:
+        type: string
+      id:
+        type: integer
+      link:
+        type: string
+      location:
+        type: string
+      remote:
+        type: boolean
+      role:
+        type: string
+      salary:
+        type: integer
+      updatedAt:
+        type: string
+    type: object
   dto.UpdateOpportunityRequest:
     properties:
       company:
@@ -119,6 +168,20 @@ definitions:
       salary:
         type: integer
     type: object
+  dto.UpdateOpportunityResponse:
+    properties:
+      data:
+        $ref: '#/definitions/dto.UpdateOpportunityData'
+      message:
+        type: string
+    type: object
+  handlers.HealthResponse:
+    properties:
+      message:
+        type: string
+      online:
+        type: boolean
+    type: object
   utils.ErrorResponse:
     properties:
       errorCode:
@@ -129,11 +192,55 @@ definitions:
 info:
   contact: {}
 paths:
+  /health:
+    get:
+      description: Return api heath status
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.HealthResponse'
+      summary: Get application health
+  /opportunities:
+    get:
+      consumes:
+      - application/json
+      description: List all job opportunity
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetallOpportunityResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: List all opportunity
+      tags:
+      - Opportunities
   /opportunity:
     delete:
       consumes:
       - application/json
-      description: List all job opportunity
+      description: Delete a job opportunity
+      parameters:
+      - description: Opportunity ID
+        in: path
+        name: id
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -153,7 +260,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/utils.ErrorResponse'
-      summary: List all opportunity
+      summary: Delete opportunity
       tags:
       - Opportunities
     get:
@@ -231,13 +338,19 @@ paths:
         name: id
         required: true
         type: string
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateOpportunityRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.UpdateOpportunityRequest'
+            $ref: '#/definitions/dto.UpdateOpportunityResponse'
         "400":
           description: Bad Request
           schema:
