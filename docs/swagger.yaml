@@ -1,4 +1,256 @@
+definitions:
+  dto.CreateOpportunityData:
+    properties:
+      company:
+        type: string
+      createdAt:
+        type: string
+      deletedAt:
+        type: string
+      id:
+        type: integer
+      link:
+        type: string
+      location:
+        type: string
+      remote:
+        type: boolean
+      role:
+        type: string
+      salary:
+        type: integer
+      updatedAt:
+        type: string
+    type: object
+  dto.CreateOpportunityRequest:
+    properties:
+      company:
+        type: string
+      link:
+        type: string
+      location:
+        type: string
+      remote:
+        type: boolean
+      role:
+        type: string
+      salary:
+        type: integer
+    type: object
+  dto.CreateOpportunityResponse:
+    properties:
+      data:
+        $ref: '#/definitions/dto.CreateOpportunityData'
+      message:
+        type: string
+    type: object
+  dto.DeleteOpportunityData:
+    properties:
+      company:
+        type: string
+      createdAt:
+        type: string
+      deletedAt:
+        type: string
+      id:
+        type: integer
+      link:
+        type: string
+      location:
+        type: string
+      remote:
+        type: boolean
+      role:
+        type: string
+      salary:
+        type: integer
+      updatedAt:
+        type: string
+    type: object
+  dto.DeleteOpportunityResponse:
+    properties:
+      data:
+        $ref: '#/definitions/dto.DeleteOpportunityData'
+      message:
+        type: string
+    type: object
+  dto.GetOpportunityData:
+    properties:
+      company:
+        type: string
+      createdAt:
+        type: string
+      deletedAt:
+        type: string
+      id:
+        type: integer
+      link:
+        type: string
+      location:
+        type: string
+      remote:
+        type: boolean
+      role:
+        type: string
+      salary:
+        type: integer
+      updatedAt:
+        type: string
+    type: object
+  dto.GetOpportunityResponse:
+    properties:
+      data:
+        $ref: '#/definitions/dto.GetOpportunityData'
+      message:
+        type: string
+    type: object
+  dto.UpdateOpportunityRequest:
+    properties:
+      company:
+        type: string
+      link:
+        type: string
+      location:
+        type: string
+      remote:
+        type: boolean
+      role:
+        type: string
+      salary:
+        type: integer
+    type: object
+  utils.ErrorResponse:
+    properties:
+      errorCode:
+        type: integer
+      message:
+        type: string
+    type: object
 info:
   contact: {}
-paths: {}
+paths:
+  /opportunity:
+    delete:
+      consumes:
+      - application/json
+      description: List all job opportunity
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.DeleteOpportunityResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: List all opportunity
+      tags:
+      - Opportunities
+    get:
+      consumes:
+      - application/json
+      description: Get a job opportunity details
+      parameters:
+      - description: Opportunity ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.GetOpportunityResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Get job opportunity
+      tags:
+      - Opportunities
+    post:
+      consumes:
+      - application/json
+      description: Create a new job opportunity
+      parameters:
+      - description: Reques body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateOpportunityRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.CreateOpportunityResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Create opportunity
+      tags:
+      - Opportunities
+    put:
+      consumes:
+      - application/json
+      description: Updates a job opportunity
+      parameters:
+      - description: Opportunity ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.UpdateOpportunityRequest'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.ErrorResponse'
+      summary: Update opportunity
+      tags:
+      - Opportunities
 swagger: "2.0"
