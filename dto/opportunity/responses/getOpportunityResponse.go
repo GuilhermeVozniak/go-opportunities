@@ -6,6 +6,11 @@ import (
 )
 
 type GetOpportunityResponse struct {
+	Message string             `json:"message"`
+	Data    GetOpportunityData `json:"data"`
+}
+
+type GetOpportunityData struct {
 	ID        uint      `json:"id"`
 	CreatedAt time.Time `json:"createdAt"`
 	UpdatedAt time.Time `json:"updatedAt"`
@@ -18,17 +23,20 @@ type GetOpportunityResponse struct {
 	Salary    int64     `json:"salary"`
 }
 
-func (*GetOpportunityResponse) FromModel(opportunity *schemas.Opportunity) *GetOpportunityResponse {
+func (*GetOpportunityResponse) FromModelToResponse(opportunity *schemas.Opportunity, op string) *GetOpportunityResponse {
 	return &GetOpportunityResponse{
-		ID:        opportunity.ID,
-		CreatedAt: opportunity.CreatedAt,
-		UpdatedAt: opportunity.UpdatedAt,
-		DeletedAt: opportunity.DeletedAt.Time,
-		Role:      opportunity.Role,
-		Company:   opportunity.Company,
-		Location:  opportunity.Location,
-		Remote:    opportunity.Remote,
-		Link:      opportunity.Link,
-		Salary:    opportunity.Salary,
+		Message: "operation from handler " + op + " successfull",
+		Data: GetOpportunityData{
+			ID:        opportunity.ID,
+			CreatedAt: opportunity.CreatedAt,
+			UpdatedAt: opportunity.UpdatedAt,
+			DeletedAt: opportunity.DeletedAt.Time,
+			Role:      opportunity.Role,
+			Company:   opportunity.Company,
+			Location:  opportunity.Location,
+			Remote:    opportunity.Remote,
+			Link:      opportunity.Link,
+			Salary:    opportunity.Salary,
+		},
 	}
 }

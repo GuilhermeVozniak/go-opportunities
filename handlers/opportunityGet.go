@@ -13,6 +13,19 @@ import (
 	"gorm.io/gorm"
 )
 
+// @BasePath /api/v1
+
+// @Summary Get job opportunity
+// @Description Get a job opportunity details
+// @Tags Opportunities
+// @Accept  json
+// @Produce  json
+// @Param id path string true "Opportunity ID"
+// @Success 200 {object} dto.GetOpportunityResponse
+// @Failure 400 {object} utils.ErrorResponse
+// @Failure 404 {object} utils.ErrorResponse
+// @Failure 500 {object} utils.ErrorResponse
+// @Router /opportunity [get]
 func GetOpportunityByIdHandler(ctx *gin.Context) {
 	var (
 		id          string = ctx.Param("id")
@@ -38,7 +51,7 @@ func GetOpportunityByIdHandler(ctx *gin.Context) {
 	}
 
 	// convert model to dto
-	response = response.FromModel(&opportunity)
+	response = response.FromModelToResponse(&opportunity, "get-opportunity")
 
-	utils.SendSuccessResponseWithCode(ctx, http.StatusOK, "get-opportunity", response)
+	utils.SendSuccessResponseWithCode(ctx, http.StatusOK, &response)
 }
