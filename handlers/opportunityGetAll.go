@@ -8,10 +8,22 @@ import (
 	"net/http"
 )
 
+// @BasePath /api/v1
+
+// @Summary List all opportunity
+// @Description List all job opportunity
+// @Tags Opportunities
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} dto.DeleteOpportunityResponse
+// @Failure 400 {object} utils.ErrorResponse
+// @Failure 404 {object} utils.ErrorResponse
+// @Failure 500 {object} utils.ErrorResponse
+// @Router /opportunity [delete]
 func GetAllOpportunitiesHandler(ctx *gin.Context) {
 	var (
 		opportunities = []schemas.Opportunity{}
-		response      *[]opportunityResponseDTO.GetallOpportunityResponse
+		response      *opportunityResponseDTO.GetallOpportunityResponse
 		dto           opportunityResponseDTO.GetallOpportunityResponse
 		err           error
 	)
@@ -22,7 +34,6 @@ func GetAllOpportunitiesHandler(ctx *gin.Context) {
 		return
 	}
 
-	response = dto.FromModel(&opportunities)
-
-	utils.SendSuccessResponseWithCode(ctx, http.StatusOK, "list-opportunities", response)
+	response = dto.FromModelToResponse(&opportunities, "list-opportunities")
+	utils.SendSuccessResponseWithCode(ctx, http.StatusOK, &response)
 }

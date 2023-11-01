@@ -5,6 +5,11 @@ import (
 )
 
 type GetallOpportunityResponse struct {
+	Message string                `json:"message"`
+	Data    []GetallOpportunityData `json:"data"`
+}
+
+type GetallOpportunityData struct {
 	ID       uint   `json:"id"`
 	Role     string `json:"role"`
 	Company  string `json:"company"`
@@ -14,11 +19,12 @@ type GetallOpportunityResponse struct {
 	Salary   int64  `json:"salary"`
 }
 
-func (*GetallOpportunityResponse) FromModel(opportunityArr *[]schemas.Opportunity) *[]GetallOpportunityResponse {
-	var opportunities = []GetallOpportunityResponse{}
+func (*GetallOpportunityResponse) FromModelToResponse(opportunityArr *[]schemas.Opportunity, op string) *GetallOpportunityResponse {
+	var opportunities = GetallOpportunityResponse{}
 
+	opportunities.Message = "operation from handler " + op + " successfull"
 	for _, opportunity := range *opportunityArr {
-		opportunities = append(opportunities, GetallOpportunityResponse{
+		opportunities.Data = append(opportunities.Data, GetallOpportunityData{
 			ID:       opportunity.ID,
 			Role:     opportunity.Role,
 			Company:  opportunity.Company,
