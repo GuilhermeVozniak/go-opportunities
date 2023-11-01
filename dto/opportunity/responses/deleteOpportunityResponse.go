@@ -1,11 +1,17 @@
 package dto
 
 import (
+	"fmt"
 	"github.com/GuilhermeVozniak/go-opportunities/schemas"
 	"time"
 )
 
 type DeleteOpportunityResponse struct {
+	Message string                `json:"message"`
+	Data    DeleteOpportunityData `json:"data"`
+}
+
+type DeleteOpportunityData struct {
 	ID        uint      `json:"id"`
 	CreatedAt time.Time `json:"createdAt"`
 	UpdatedAt time.Time `json:"updatedAt"`
@@ -18,17 +24,20 @@ type DeleteOpportunityResponse struct {
 	Salary    int64     `json:"salary"`
 }
 
-func (*DeleteOpportunityResponse) FromModel(opportunity *schemas.Opportunity) *DeleteOpportunityResponse {
+func (*DeleteOpportunityResponse) FromModelToResponse(opportunity *schemas.Opportunity, op string) *DeleteOpportunityResponse {
 	return &DeleteOpportunityResponse{
-		ID:        opportunity.ID,
-		CreatedAt: opportunity.CreatedAt,
-		UpdatedAt: opportunity.UpdatedAt,
-		DeletedAt: opportunity.DeletedAt.Time,
-		Role:      opportunity.Role,
-		Company:   opportunity.Company,
-		Location:  opportunity.Location,
-		Remote:    opportunity.Remote,
-		Link:      opportunity.Link,
-		Salary:    opportunity.Salary,
+		Message: fmt.Sprintf("operation from handler %s successfull", op),
+		Data: DeleteOpportunityData{
+			ID:        opportunity.ID,
+			CreatedAt: opportunity.CreatedAt,
+			UpdatedAt: opportunity.UpdatedAt,
+			DeletedAt: opportunity.DeletedAt.Time,
+			Role:      opportunity.Role,
+			Company:   opportunity.Company,
+			Location:  opportunity.Location,
+			Remote:    opportunity.Remote,
+			Link:      opportunity.Link,
+			Salary:    opportunity.Salary,
+		},
 	}
 }
