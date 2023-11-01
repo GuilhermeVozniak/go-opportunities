@@ -1,23 +1,24 @@
 package utils
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 )
 
 func SendErrorResponseWithCode(ctx *gin.Context, code int, err error) {
 	ctx.Header("content-type", "application/json")
-	ctx.AbortWithStatusJSON(code, gin.H{
-		"message":   err.Error(),
-		"errorCode": code,
+	ctx.JSON(code, ErrorResponse{
+		Message:   err.Error(),
+		ErrorCode: code,
 	})
 }
 
-func SendSuccessResponseWithCode(ctx *gin.Context, code int,op string, data interface{}) {
+func SendSuccessResponseWithCode(ctx *gin.Context, code int, data interface{}) {
 	ctx.Header("content-type", "application/json")
-	ctx.JSON(code, gin.H{
-		"message": fmt.Sprintf("operation from handler %s successfull", op),
-		"data":    data,
-	})
+	ctx.JSON(code, data)
 }
+
+type ErrorResponse struct {
+	Message   string `json:"message"`
+	ErrorCode int    `json:"errorCode"`
+}
+

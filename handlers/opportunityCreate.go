@@ -8,6 +8,19 @@ import (
 	"net/http"
 )
 
+// @BasePath /api/v1
+
+// @Summary Create opportunity
+// @Description Create a new job opportunity
+// @Tags Opportunities
+// @Accept  json
+// @Produce  json
+// @Param request body dto.CreateOpportunityRequest true "Reques body"
+// @Success 201 {object} dto.CreateOpportunityResponse
+// @Failure 400 {object} utils.ErrorResponse
+// @Failure 422 {object} utils.ErrorResponse
+// @Failure 500 {object} utils.ErrorResponse
+// @Router /opportunity [post]
 func CreateOpportunityHandler(ctx *gin.Context) {
 	var (
 		request  opportunityRequestDTO.CreateOpportunityRequest
@@ -38,7 +51,6 @@ func CreateOpportunityHandler(ctx *gin.Context) {
 	}
 
 	// convert model to dto
-	response = response.FromModel(opportunity)
-
-	utils.SendSuccessResponseWithCode(ctx, http.StatusCreated, "create-opportunity", opportunity)
+	response = response.FromModelToResponse(opportunity,"create-opportunity")
+	utils.SendSuccessResponseWithCode(ctx, http.StatusCreated, &response)
 }
