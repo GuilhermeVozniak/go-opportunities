@@ -1,9 +1,9 @@
-package handlers
+package handler
 
 import (
 	opportunityRequestDTO "github.com/GuilhermeVozniak/go-opportunities/dto/opportunity/requests"
 	opportunityResponseDTO "github.com/GuilhermeVozniak/go-opportunities/dto/opportunity/responses"
-	"github.com/GuilhermeVozniak/go-opportunities/utils"
+	"github.com/GuilhermeVozniak/go-opportunities/util"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -17,9 +17,9 @@ import (
 // @Produce  json
 // @Param request body dto.CreateOpportunityRequest true "Reques body"
 // @Success 201 {object} dto.CreateOpportunityResponse
-// @Failure 400 {object} utils.ErrorResponse
-// @Failure 422 {object} utils.ErrorResponse
-// @Failure 500 {object} utils.ErrorResponse
+// @Failure 400 {object} util.ErrorResponse
+// @Failure 422 {object} util.ErrorResponse
+// @Failure 500 {object} util.ErrorResponse
 // @Router /opportunity [post]
 func CreateOpportunityHandler(ctx *gin.Context) {
 	var (
@@ -31,13 +31,13 @@ func CreateOpportunityHandler(ctx *gin.Context) {
 	// parse request
 	if err = ctx.BindJSON(&request); err != nil {
 		logger.Errorf("bind json error: %v", err)
-		utils.SendErrorResponseWithCode(ctx, http.StatusBadRequest, err)
+		util.SendErrorResponseWithCode(ctx, http.StatusBadRequest, err)
 		return
 	}
 	// validate request
 	if err = request.Validate(); err != nil {
 		logger.Errorf("validation error: %v", err.Error())
-		utils.SendErrorResponseWithCode(ctx, http.StatusUnprocessableEntity, err)
+		util.SendErrorResponseWithCode(ctx, http.StatusUnprocessableEntity, err)
 		return
 	}
 
@@ -46,11 +46,11 @@ func CreateOpportunityHandler(ctx *gin.Context) {
 
 	if err := db.Create(&opportunity).Error; err != nil {
 		logger.Error(err)
-		utils.SendErrorResponseWithCode(ctx, http.StatusInternalServerError, err)
+		util.SendErrorResponseWithCode(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
 	// convert model to dto
 	response = response.FromModelToResponse(opportunity,"create-opportunity")
-	utils.SendSuccessResponseWithCode(ctx, http.StatusCreated, &response)
+	util.SendSuccessResponseWithCode(ctx, http.StatusCreated, &response)
 }

@@ -1,4 +1,4 @@
-package handlers
+package handler
 
 import (
 	"errors"
@@ -6,8 +6,8 @@ import (
 	opportunityRequestDTO "github.com/GuilhermeVozniak/go-opportunities/dto/opportunity/requests"
 	opportunityResponseDTO "github.com/GuilhermeVozniak/go-opportunities/dto/opportunity/responses"
 	"github.com/GuilhermeVozniak/go-opportunities/schemas"
-	"github.com/GuilhermeVozniak/go-opportunities/utils"
-	validationHelpers "github.com/GuilhermeVozniak/go-opportunities/validationHelpers"
+	"github.com/GuilhermeVozniak/go-opportunities/util"
+	 "github.com/GuilhermeVozniak/go-opportunities/helper"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"net/http"
@@ -23,9 +23,9 @@ import (
 // @Param id path string true "Opportunity ID"
 // @Param request body dto.UpdateOpportunityRequest true "Request body"
 // @Success 200 {object} dto.UpdateOpportunityResponse
-// @Failure 400 {object} utils.ErrorResponse
-// @Failure 404 {object} utils.ErrorResponse
-// @Failure 500 {object} utils.ErrorResponse
+// @Failure 400 {object} util.ErrorResponse
+// @Failure 404 {object} util.ErrorResponse
+// @Failure 500 {object} util.ErrorResponse
 // @Router /opportunity [put]
 func UpdateOpportunityByIdHandler(ctx *gin.Context) {
 	var (
@@ -38,27 +38,27 @@ func UpdateOpportunityByIdHandler(ctx *gin.Context) {
 
 	// check for id
 	if id == "" {
-		utils.SendErrorResponseWithCode(ctx, http.StatusBadRequest, validationHelpers.ErrParamIsRequired("id", "string"))
+		util.SendErrorResponseWithCode(ctx, http.StatusBadRequest, helper.ErrParamIsRequired("id", "string"))
 		return
 	}
 
 	// parse request
 	if err = ctx.BindJSON(&request); err != nil {
-		utils.SendErrorResponseWithCode(ctx, http.StatusBadRequest, err)
+		util.SendErrorResponseWithCode(ctx, http.StatusBadRequest, err)
 		return
 	}
 	// validate request
 	if err = request.Validate(); err != nil {
-		utils.SendErrorResponseWithCode(ctx, http.StatusBadRequest, err)
+		util.SendErrorResponseWithCode(ctx, http.StatusBadRequest, err)
 		return
 	}
 
 	// check for opportunity
 	if err = db.First(&opportunity, id).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
-			utils.SendErrorResponseWithCode(ctx, http.StatusNotFound, errors.New(fmt.Sprintf("opportunity with id %s not found", id)))
+			util.SendErrorResponseWithCode(ctx, http.StatusNotFound, errors.New(fmt.Sprintf("opportunity with id %s not found", id)))
 		} else {
-			utils.SendErrorResponseWithCode(ctx, http.StatusInternalServerError, err)
+			util.SendErrorResponseWithCode(ctx, http.StatusInternalServerError, err)
 		}
 		return
 	}
@@ -68,12 +68,12 @@ func UpdateOpportunityByIdHandler(ctx *gin.Context) {
 
 	if err := db.Updates(&opportunity).Error; err != nil {
 		logger.Error(err)
-		utils.SendErrorResponseWithCode(ctx, http.StatusInternalServerError, err)
+		util.SendErrorResponseWithCode(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
 	// convert model to dto
 	response = response.FromModelToResponse(&opportunity, "update-opportunity")
 
-	utils.SendSuccessResponseWithCode(ctx, http.StatusOK, &response)
+	util.SendSuccessResponseWithCode(ctx, http.StatusOK, &response)
 }

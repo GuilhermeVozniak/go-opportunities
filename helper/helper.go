@@ -1,4 +1,4 @@
-package validationHelpers
+package helper
 
 import (
 	"fmt"

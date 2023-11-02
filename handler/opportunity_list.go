@@ -1,9 +1,9 @@
-package handlers
+package handler
 
 import (
 	opportunityResponseDTO "github.com/GuilhermeVozniak/go-opportunities/dto/opportunity/responses"
 	"github.com/GuilhermeVozniak/go-opportunities/schemas"
-	"github.com/GuilhermeVozniak/go-opportunities/utils"
+	"github.com/GuilhermeVozniak/go-opportunities/util"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -16,9 +16,9 @@ import (
 // @Accept  json
 // @Produce  json
 // @Success 200 {object} dto.GetallOpportunityResponse
-// @Failure 400 {object} utils.ErrorResponse
-// @Failure 404 {object} utils.ErrorResponse
-// @Failure 500 {object} utils.ErrorResponse
+// @Failure 400 {object} util.ErrorResponse
+// @Failure 404 {object} util.ErrorResponse
+// @Failure 500 {object} util.ErrorResponse
 // @Router /opportunities [get]
 func GetAllOpportunitiesHandler(ctx *gin.Context) {
 	var (
@@ -29,10 +29,10 @@ func GetAllOpportunitiesHandler(ctx *gin.Context) {
 
 	if err = db.Find(&opportunities).Error; err != nil {
 		logger.Error(err)
-		utils.SendErrorResponseWithCode(ctx, http.StatusInternalServerError, err)
+		util.SendErrorResponseWithCode(ctx, http.StatusInternalServerError, err)
 		return
 	}
 
 	response = response.FromModelToResponse(&opportunities, "list-opportunities")
-	utils.SendSuccessResponseWithCode(ctx, http.StatusOK, &response)
+	util.SendSuccessResponseWithCode(ctx, http.StatusOK, &response)
 }

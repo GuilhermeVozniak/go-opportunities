@@ -1,8 +1,8 @@
 package dto
 
 import (
+	"github.com/GuilhermeVozniak/go-opportunities/helper"
 	"github.com/GuilhermeVozniak/go-opportunities/schemas"
-	"github.com/GuilhermeVozniak/go-opportunities/validationHelpers"
 )
 
 type CreateOpportunityRequest struct {
@@ -16,35 +16,35 @@ type CreateOpportunityRequest struct {
 
 func (v *CreateOpportunityRequest) Validate() error {
 	if v.Role == "" && v.Company == "" && v.Location == "" && v.Link == "" && v.Remote == nil && v.Salary <= 0 {
-		return validationHelpers.ErrEmptyRequestBody()
+		return helper.ErrEmptyRequestBody()
 	}
 
 	if v == nil {
-		return validationHelpers.ErrMalformedJSON()
+		return helper.ErrMalformedJSON()
 	}
 
 	if v.Role == "" {
-		return validationHelpers.ErrParamIsRequired("role", "string")
+		return helper.ErrParamIsRequired("role", "string")
 	}
 
 	if v.Company == "" {
-		return validationHelpers.ErrParamIsRequired("company", "string")
+		return helper.ErrParamIsRequired("company", "string")
 	}
 
 	if v.Location == "" {
-		return validationHelpers.ErrParamIsRequired("location", "string")
+		return helper.ErrParamIsRequired("location", "string")
 	}
 
 	if v.Link == "" {
-		return validationHelpers.ErrParamIsRequired("link", "string")
+		return helper.ErrParamIsRequired("link", "string")
 	}
 
 	if v.Remote == nil {
-		return validationHelpers.ErrParamIsRequired("remote", "bool")
+		return helper.ErrParamIsRequired("remote", "bool")
 	}
 
 	if v.Salary <= 0 {
-		return validationHelpers.ErrParamIsRequired("salary", "int64")
+		return helper.ErrParamIsRequired("salary", "int64")
 	}
 	return nil
 }

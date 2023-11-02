@@ -2,7 +2,7 @@ package dto
 
 import (
 	"github.com/GuilhermeVozniak/go-opportunities/schemas"
-	"github.com/GuilhermeVozniak/go-opportunities/validationHelpers"
+	"github.com/GuilhermeVozniak/go-opportunities/helper"
 )
 
 type UpdateOpportunityRequest struct {
@@ -19,7 +19,7 @@ func (v *UpdateOpportunityRequest) Validate() error {
 	if v.Role != "" || v.Company != "" || v.Location != "" || v.Link != "" || v.Remote != nil || v.Salary > 0 {
 		return nil
 	}
-	return validationHelpers.ErrEmptyRequestBody()
+	return helper.ErrEmptyRequestBody()
 }
 
 func (v *UpdateOpportunityRequest) ToModel(opportunity *schemas.Opportunity) schemas.Opportunity {
